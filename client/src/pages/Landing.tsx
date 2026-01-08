@@ -4,16 +4,17 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Loader2, CheckCircle2, TrendingUp, BarChart3, Zap } from "lucide-react";
+import { Loader2, CheckCircle2, TrendingUp, BarChart3, Zap, Calendar, Activity, Droplet, Brain } from "lucide-react";
 
 /**
- * Design Philosophy: Clinical Minimalism with Warm Neutrals
- * Professional, centered landing page with prominent Ventre branding
+ * Design Philosophy: Clinical Minimalism with Warm Neutrals + Slight Vibe Coding
+ * Landing page with top login button and feature facts grid
  */
 
 export default function Landing() {
   const { login, signup, isLoading } = useAuth();
   const [, setLocation] = useLocation();
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
@@ -52,10 +53,43 @@ export default function Landing() {
     }
   };
 
+  const features = [
+    {
+      icon: Calendar,
+      title: "Weekly Trends",
+      description: "See patterns over weeks and months, not daily noise.",
+    },
+    {
+      icon: Activity,
+      title: "Frequency Tracking",
+      description: "Monitor bowel movements and timing consistency.",
+    },
+    {
+      icon: BarChart3,
+      title: "Clear Visualizations",
+      description: "Professional charts designed for clarity and confidence.",
+    },
+    {
+      icon: Droplet,
+      title: "Hydration Insights",
+      description: "Correlate water intake with digestive patterns.",
+    },
+    {
+      icon: Brain,
+      title: "Smart Correlations",
+      description: "Discover associations between lifestyle and digestive health.",
+    },
+    {
+      icon: Zap,
+      title: "Passive Tracking",
+      description: "Automatic logging—no manual entry required.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+      <div className="fixed inset-0 opacity-15 pointer-events-none">
         <img
           src="/images/pattern-accent.png"
           alt="Background"
@@ -63,32 +97,110 @@ export default function Landing() {
         />
       </div>
 
-      {/* Main Content */}
-      <div className="relative flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div className="w-full max-w-2xl">
-          {/* Logo & Brand */}
-          <div className="text-center mb-12">
-            <div className="inline-block mb-6">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-3xl font-bold text-primary-foreground">V</span>
-              </div>
+      {/* Header with Login Button */}
+      <header className="relative z-40 border-b border-border/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-md">
+              <span className="text-xl font-bold text-primary-foreground">V</span>
             </div>
-            <h1 className="text-6xl lg:text-7xl font-bold text-foreground mb-2">Ventre</h1>
-            <p className="text-xl text-muted-foreground">Understand Your Gut Health</p>
+            <h1 className="text-2xl font-bold text-foreground">Ventre</h1>
           </div>
+          <Button
+            onClick={() => {
+              setShowAuthModal(true);
+              setIsLoginMode(true);
+              setFormData({ email: "", password: "", name: "" });
+              setError("");
+            }}
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            Sign In
+          </Button>
+        </div>
+      </header>
 
-          {/* Tagline */}
-          <div className="text-center mb-12">
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
-              Ventre passively tracks your digestive patterns and reveals trends that matter. 
-              <span className="block font-semibold text-foreground mt-2">
-                One event means nothing. Trends over time tell the real story.
-              </span>
+      {/* Main Content */}
+      <main className="relative z-10">
+        {/* Hero Section */}
+        <section className="py-16 lg:py-24 text-center">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <h2 className="text-5xl lg:text-6xl font-bold text-foreground mb-4">
+              Understand Your Gut Health
+            </h2>
+            <p className="text-xl text-muted-foreground leading-relaxed mb-4">
+              Ventre passively tracks your digestive patterns and reveals trends that matter.
+            </p>
+            <p className="text-lg font-semibold text-foreground">
+              One event means nothing. Trends over time tell the real story.
             </p>
           </div>
 
-          {/* Auth Card */}
-          <Card className="p-8 mb-12 shadow-lg">
+          {/* CTA Button */}
+          <Button
+            onClick={() => {
+              setShowAuthModal(true);
+              setIsLoginMode(false);
+              setFormData({ email: "", password: "", name: "" });
+              setError("");
+            }}
+            size="lg"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+          >
+            Get Started Free
+          </Button>
+        </section>
+
+        {/* Features Grid */}
+        <section className="py-16 lg:py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card
+                    key={index}
+                    className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-border/50 bg-card/50 backdrop-blur-sm"
+                  >
+                    <div className="flex flex-col gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-foreground mb-2">
+                          {feature.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Section */}
+        <section className="py-12 lg:py-16 bg-secondary/30">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="p-6 bg-card/80 backdrop-blur-sm rounded-lg border border-border/50 text-center">
+              <div className="flex gap-3 items-center justify-center mb-3">
+                <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                <p className="text-sm text-foreground">
+                  <strong>Not a medical device.</strong> Ventre displays patterns and trends. Always consult healthcare providers for medical concerns.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <Card className="w-full max-w-md p-8 shadow-2xl">
             <div className="space-y-6">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-foreground">
@@ -197,56 +309,20 @@ export default function Landing() {
               >
                 {isLoginMode ? "Create Account" : "Sign In"}
               </Button>
+
+              <button
+                onClick={() => setShowAuthModal(false)}
+                className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Close
+              </button>
             </div>
           </Card>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                <TrendingUp className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-1">Trend-Based</h3>
-              <p className="text-sm text-muted-foreground">
-                See patterns over weeks and months, not daily noise.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                <BarChart3 className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-1">Clear Data</h3>
-              <p className="text-sm text-muted-foreground">
-                Professional visualizations designed for clarity.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                <Zap className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-1">Passive</h3>
-              <p className="text-sm text-muted-foreground">
-                Automatic logging—no manual entry required.
-              </p>
-            </div>
-          </div>
-
-          {/* Trust Statement */}
-          <div className="p-4 bg-secondary rounded-lg border border-border text-center">
-            <div className="flex gap-2 items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-              <p className="text-sm text-foreground">
-                <strong>Not a medical device.</strong> Always consult healthcare providers for medical concerns.
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
+      )}
 
       {/* Footer */}
-      <footer className="relative border-t border-border py-6 text-center">
+      <footer className="relative border-t border-border py-6 text-center bg-card/30 backdrop-blur-sm">
         <p className="text-xs text-muted-foreground">
           Ventre is a passive digestive tracking system. © 2026. All rights reserved.
         </p>
