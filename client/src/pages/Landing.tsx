@@ -101,9 +101,7 @@ export default function Landing() {
       <header className="relative z-40 border-b border-border/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-md">
-              <span className="text-xl font-bold text-primary-foreground">V</span>
-            </div>
+            <img src="/images/logo-frame.png" alt="Ventre Logo" className="w-10 h-10" />
             <h1 className="text-2xl font-bold text-foreground">Ventre</h1>
           </div>
           <Button
